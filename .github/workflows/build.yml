@@ -1,0 +1,16 @@
+name: Build VST3
+on: [push]
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Configure CMake
+        run: cmake -B build -S CleanMixEQ -DCMAKE_BUILD_TYPE=Release
+      - name: Build
+        run: cmake --build build --config Release
+      - name: Upload VST3
+        uses: actions/upload-artifact@v3
+        with:
+          name: PMT-CleanMixEQ-VST3
+          path: build/CleanMixEQ_artefacts/Release/VST3/
