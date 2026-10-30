@@ -4,11 +4,18 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      
+      - name: Clone JUCE Framework
+        run: git clone -b 7.0.9 --depth 1 https://github.com/juce-framework/JUCE.git
+        
       - name: Configure CMake
-        run: cmake -B build -S CleanMixEQ -DCMAKE_BUILD_TYPE=Release
+        run: cmake -B build -S CleanMixEQ -DCMAKE_BUILD_TYPE=Release -DJUCE_DIR="${{ github.workspace }}/JUCE/extras/Build/juce"
+        
       - name: Build
         run: cmake --build build --config Release
+        
       - name: Upload VST3
         uses: actions/upload-artifact@v4
         with:
